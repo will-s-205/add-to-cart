@@ -1,13 +1,31 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"
-import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
+import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
 
-const your_url = "https://my-react-project-9ba22-default-rtdb.firebaseio.com/"
+const appSettings = {
+    databaseURL: "https://my-react-project-9ba22-default-rtdb.firebaseio.com",
+};
 
-const appSettings = { databaseURL: your_url }
-
+// INITIALIZE THE DATABASE
 const app = initializeApp(appSettings)
-const db = getDatabase(app)
-const dbRef = ref(db, "products")
+// const db = getDatabase(app)
+// const foodRef = ref(db, "products")
+// const booksRef = ref(db, "books")
+// OR
+// READ SNAPSHOT FROM THE DATABASE
+firebase.initializeApp(appSettings);
+const database = firebase.database();
+const foodRef = database.ref('products');
+const booksRef = database.ref('books');
+
+// READ SNAPSHOT FROM THE DATABASE
+booksRef.once('value')
+    .then(function (snapshot) {
+        const data = snapshot.val();
+        console.log(data); // Log the retrieved data to the console
+    })
+    .catch(function (error) {
+        console.error(error);
+    });
 
 const inputFieldEl = document.getElementById("input-field")
 const addButtonEl = document.getElementById("add-button")
@@ -23,7 +41,7 @@ function addItemToShoppingList(input) {
     // shoppingListEl.append(document.createElement("li").textContent = input) // DOES NOT WORK
 }
 
-// SET THE INPUT FIELD TO BE EMPTY AFTER ADDING AN ITEM
+// // SET THE INPUT FIELD TO BE EMPTY AFTER ADDING AN ITEM
 function clearInputField() {
     inputFieldEl.value = ""
 }
@@ -32,7 +50,7 @@ addButtonEl.addEventListener("click", function () {
     const inputValue = inputFieldEl.value
 
     // ADD THE INPUT VALUE TO THE DATABASE
-    push(dbRef, inputValue);
+    push(foodRef, inputValue);
     // console.log(`${inputValue} was added to the database!`) // DEBUG
     addItemToShoppingList(inputValue)
     clearInputField()
