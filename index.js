@@ -11,11 +11,29 @@ const dbRef = ref(db, "products")
 
 const inputFieldEl = document.getElementById("input-field")
 const addButtonEl = document.getElementById("add-button")
+const shoppingListEl = document.getElementById("shopping-list")
+
+function addItemToShoppingList(input) {
+    shoppingListEl.innerHTML += `<li>${input}</li>`
+    // OR
+    // let newLi = document.createElement("li")
+    // newLi.textContent = input
+    // shoppingListEl.append(newLi)
+    // OR
+    // shoppingListEl.append(document.createElement("li").textContent = input) // DOES NOT WORK
+}
+
+// SET THE INPUT FIELD TO BE EMPTY AFTER ADDING AN ITEM
+function clearInputField() {
+    inputFieldEl.value = ""
+}
 
 addButtonEl.addEventListener("click", function () {
-    let inputValue = inputFieldEl.value
+    const inputValue = inputFieldEl.value
 
-    push(dbRef, inputValue)
-
-    console.log(`${inputValue} was added to the database!`)
+    // ADD THE INPUT VALUE TO THE DATABASE
+    push(dbRef, inputValue);
+    // console.log(`${inputValue} was added to the database!`) // DEBUG
+    addItemToShoppingList(inputValue)
+    clearInputField()
 })
