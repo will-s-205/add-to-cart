@@ -18,10 +18,17 @@ const foodRef = database.ref('products');
 const booksRef = database.ref('books');
 
 // READ SNAPSHOT FROM THE DATABASE
-booksRef.once('value')
+foodRef.once('value')
     .then(function (snapshot) {
+        // GET THE DATA FROM THE SNAPSHOT
         const data = snapshot.val();
-        console.log(data); // Log the retrieved data to the console
+        // VARIABLE TO STORE THE DATA
+        const foodArray = Object.values(data)
+
+        // KEEPING LIST OF ITEMS UPDATED ACCORDING TO THE DATABASE
+        foodArray.forEach(function (food) {
+            addItemToShoppingList(food)
+        })
     })
     .catch(function (error) {
         console.error(error);
