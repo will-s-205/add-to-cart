@@ -31,7 +31,7 @@ foodRef.once('value')
             const foodItemId = currentFoodItem[0];
             const foodItemValue = currentFoodItem[1];
 
-            addItemToShoppingListFromDB(currentFoodItem)
+            addItemToShoppingList(currentFoodItem)
         }
     })
     .catch(function (error) {
@@ -54,19 +54,13 @@ const shoppingListEl = document.getElementById("shopping-list")
 
 // ADD THE INPUT VALUE TO THE SHOPPING LIST
 function addItemToShoppingList(item) {
-    const newEl = document.createElement("li")
-
-    newEl.textContent = `${item}`
-    shoppingListEl.append(newEl)
-}
-
-// ADD DATA FROM THE DATABASE TO THE SHOPPING LIST
-function addItemToShoppingListFromDB(item) {
     const itemId = item[0]
     const itemValue = item[1]
+
     const newEl = document.createElement("li")
-    
+
     newEl.textContent = `${itemValue}`
+
     shoppingListEl.append(newEl)
 }
 
