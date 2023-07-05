@@ -4,80 +4,96 @@ import { getDatabase, ref, push, remove } from "https://www.gstatic.com/firebase
 const inputFieldEl = document.getElementById("input-field")
 const addButtonEl = document.getElementById("add-button")
 const shoppingListEl = document.getElementById("shopping-list")
+const yourFirebaseUri = document.getElementById("your-firebase-uri")
+const uriButton = document.getElementById("uri-button")
 
-const appSettings = {
-    databaseURL: "https://my-react-project-9ba22-default-rtdb.firebaseio.com",
-};
+uriButton.addEventListener("click", function () {
+    let appSettings = {
+        databaseURL: `${yourFirebaseUri.value}`,
+    };
 
-// INITIALIZE THE DATABASE
-firebase.initializeApp(appSettings);
-const database = firebase.database();
-const foodRef = database.ref('products');
-const booksRef = database.ref('books');
+    const firebaseUri = Object.values(appSettings);
+    // alert("\nConnected to\n" + firebaseUri)
 
-// READ SNAPSHOT FROM THE DATABASE
-foodRef.once('value')
-    .then(function (snapshot) {
-        if (snapshot.exists()) {
-            // GET THE DATA FROM THE SNAPSHOT
-            const data = snapshot.val();
-            // VARIABLE TO STORE THE DATA
-            const foodArray = Object.entries(data)
+    if (firebaseUri[0] === "") {
+        appSettings = {
+            databaseURL: "https://my-react-project-9ba22-default-rtdb.firebaseio.com",
+        };
+    } else {
+        alert("\nConnected to\n" + firebaseUri)
+    }
+    console.log("firebaseUri - ", firebaseUri[0])
 
-            // KEEPING LIST OF ITEMS UPDATED ACCORDING TO THE DATABASE
-            for (let i = 0; i < foodArray.length; i++) {
-                const currentFoodItem = foodArray[i];
-                const foodItemId = currentFoodItem[0];
-                const foodItemValue = currentFoodItem[1];
+    // INITIALIZE THE DATABASE
+    firebase.initializeApp(appSettings);
+    const database = firebase.database();
+    const foodRef = database.ref('products');
+    const booksRef = database.ref('books');
 
-                addItemToShoppingList(currentFoodItem)
+    // READ SNAPSHOT FROM THE DATABASE
+    foodRef.once('value')
+        .then(function (snapshot) {
+            if (snapshot.exists()) {
+                // GET THE DATA FROM THE SNAPSHOT
+                const data = snapshot.val();
+                // VARIABLE TO STORE THE DATA
+                const foodArray = Object.entries(data)
+
+                // KEEPING LIST OF ITEMS UPDATED ACCORDING TO THE DATABASE
+                for (let i = 0; i < foodArray.length; i++) {
+                    const currentFoodItem = foodArray[i];
+                    const foodItemId = currentFoodItem[0];
+                    const foodItemValue = currentFoodItem[1];
+
+                    addItemToShoppingList(currentFoodItem)
+                }
             }
-        }
-    })
-    .catch(function (error) {
-        console.error(error);
-    });
+        })
+        .catch(function (error) {
+            console.error(error);
+        });
 
-// ADD THE INPUT VALUE TO THE SHOPPING LIST
-function addItemToShoppingList(item) {
-    // const arr = Object.fromEntries(item)
-    const itemId = item[0]
-    const itemValue = item[1]
+    // ADD THE INPUT VALUE TO THE SHOPPING LIST
+    function addItemToShoppingList(item) {
+        // const arr = Object.fromEntries(item)
+        const itemId = item[0]
+        const itemValue = item[1]
 
-    // SINCE BACK-END AND FRONT-END USING THE SAME METHOD 
-    // BUT DIFFERENT TYPE DEPENDING ON THE INPUT
-    // console.log(typeof item)
-    // console.log(typeof itemValue)
-    const newEl = document.createElement("li")
-    newEl.textContent = typeof item === "string" ? item : itemValue;
-    shoppingListEl.append(newEl)
+        // SINCE BACK-END AND FRONT-END USING THE SAME METHOD 
+        // BUT DIFFERENT TYPE DEPENDING ON THE INPUT
+        // console.log(typeof item)
+        // console.log(typeof itemValue)
+        const newEl = document.createElement("li")
+        newEl.textContent = typeof item === "string" ? item : itemValue;
+        shoppingListEl.append(newEl)
 
-    // REMOVE BUTTON FUNCTIONALITY
-    newEl.addEventListener("click", function () {
-        let itemInDB = ref(database, `products/${itemId}`)
+        // REMOVE BUTTON FUNCTIONALITY
+        newEl.addEventListener("click", function () {
+            let itemInDB = ref(database, `products/${itemId}`)
 
-        remove(itemInDB)
-        shoppingListEl.removeChild(newEl)
-    })
-}
-
-// // SET THE INPUT FIELD TO BE EMPTY AFTER ADDING AN ITEM
-function clearInputField() {
-    inputFieldEl.value = ""
-}
-
-addButtonEl.addEventListener("click", function () {
-    const inputValue = inputFieldEl.value
-
-    if (inputValue === "") {
-        alert("Please enter a value")
-        return
+            remove(itemInDB)
+            shoppingListEl.removeChild(newEl)
+        })
     }
 
-    // ADD THE INPUT VALUE TO THE DATABASE
-    push(foodRef, inputValue);
-    // console.log(`${inputValue} was added to the database!`) // DEBUG
-    // DUPLICATE TO KEEP THE SHOPPING LIST UPDATED ACCORDING TO THE DATABASE
-    addItemToShoppingList(inputValue)
-    clearInputField()
+    // // SET THE INPUT FIELD TO BE EMPTY AFTER ADDING AN ITEM
+    function clearInputField() {
+        inputFieldEl.value = ""
+    }
+
+    addButtonEl.addEventListener("click", function () {
+        const inputValue = inputFieldEl.value
+
+        if (inputValue === "") {
+            alert("Please enter a value")
+            return
+        }
+
+        // ADD THE INPUT VALUE TO THE DATABASE
+        push(foodRef, inputValue);
+        // console.log(`${inputValue} was added to the database!`) // DEBUG
+        // DUPLICATE TO KEEP THE SHOPPING LIST UPDATED ACCORDING TO THE DATABASE
+        addItemToShoppingList(inputValue)
+        clearInputField()
+    })
 })
