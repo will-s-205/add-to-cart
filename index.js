@@ -7,22 +7,12 @@ const shoppingListEl = document.getElementById("shopping-list")
 const yourFirebaseUri = document.getElementById("your-firebase-uri")
 const uriButton = document.getElementById("uri-button")
 
+yourFirebaseUri.value = "https://my-react-project-9ba22-default-rtdb.firebaseio.com"
+
 uriButton.addEventListener("click", function () {
-    let appSettings = {
+    const appSettings = {
         databaseURL: `${yourFirebaseUri.value}`,
     };
-
-    const firebaseUri = Object.values(appSettings);
-    // alert("\nConnected to\n" + firebaseUri)
-
-    if (firebaseUri[0] === "") {
-        appSettings = {
-            databaseURL: "https://my-react-project-9ba22-default-rtdb.firebaseio.com",
-        };
-    } else {
-        alert("\nConnected to\n" + firebaseUri)
-    }
-    console.log("firebaseUri - ", firebaseUri[0])
 
     // INITIALIZE THE DATABASE
     firebase.initializeApp(appSettings);

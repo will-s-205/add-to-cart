@@ -17,7 +17,7 @@ body {
 
 img {
     width: 150px;
-    margin: 0 auto;
+    margin: 30px auto 10px auto;
 }
 
 input {
@@ -34,7 +34,7 @@ input {
 
 button {
     color: #FDFDFD;
-    background-color: #AC485A;
+    background-color: #354598cc;
     border: 0;
     padding: 15px;
     border-radius: 8px;
@@ -44,7 +44,7 @@ button {
 }
 
 button:hover {
-    background-color: #9c4c00;
+    background-color: #354598;
     transition: transform 0.1s ease;
     transform: scale(0.95);
 }
@@ -52,12 +52,9 @@ button:hover {
 ul {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
     list-style-type: none;
-    padding: 0;
     justify-content: center;
-    padding-left: 20px;
-    padding-right: 20px;
 }
 
 ul li {
@@ -72,4 +69,8 @@ ul li:hover {
     background-color: #FFECC7;
     transition: transform 0.1s ease;
     transform: scale(0.95);
+}
+
+#shopping-list {
+    padding-left: 0;
 }
