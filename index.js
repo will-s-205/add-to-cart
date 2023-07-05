@@ -1,17 +1,15 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"
-import { getDatabase, ref, push, onValue } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
+import { getDatabase, ref, push, remove } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"
+
+const inputFieldEl = document.getElementById("input-field")
+const addButtonEl = document.getElementById("add-button")
+const shoppingListEl = document.getElementById("shopping-list")
 
 const appSettings = {
     databaseURL: "https://my-react-project-9ba22-default-rtdb.firebaseio.com",
 };
 
 // INITIALIZE THE DATABASE
-// const app = initializeApp(appSettings)
-// const db = getDatabase(app)
-// const foodRef = ref(db, "products")
-// const booksRef = ref(db, "books")
-// OR
-// READ SNAPSHOT FROM THE DATABASE
 firebase.initializeApp(appSettings);
 const database = firebase.database();
 const foodRef = database.ref('products');
@@ -38,10 +36,6 @@ foodRef.once('value')
         console.error(error);
     });
 
-const inputFieldEl = document.getElementById("input-field")
-const addButtonEl = document.getElementById("add-button")
-const shoppingListEl = document.getElementById("shopping-list")
-
 // ADD THE INPUT VALUE TO THE SHOPPING LIST
 function addItemToShoppingList(item) {
     // const arr = Object.fromEntries(item)
@@ -49,7 +43,20 @@ function addItemToShoppingList(item) {
     const itemValue = item[1]
 
     // SINCE BACK-END AND FRONT-END USING THE SAME METHOD 
-    const newEl = document.getElementById("shopping-list").innerHTML += `<li>${typeof item === "string" ? item : itemValue}</li>`
+    // BUT DIFFERENT TYPE DEPENDING ON THE INPUT
+    // console.log(typeof item)
+    // console.log(typeof itemValue)
+    const newEl = document.createElement("li")
+    newEl.textContent = typeof item === "string" ? item : itemValue;
+    shoppingListEl.append(newEl)
+
+    // REMOVE BUTTON FUNCTIONALITY
+    newEl.addEventListener("click", function () {
+        let itemInDB = ref(database, `products/${itemId}`)
+
+        remove(itemInDB)
+        shoppingListEl.removeChild(newEl)
+    })
 }
 
 // // SET THE INPUT FIELD TO BE EMPTY AFTER ADDING AN ITEM
