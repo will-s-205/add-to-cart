@@ -18,18 +18,22 @@ const booksRef = database.ref('books');
 // READ SNAPSHOT FROM THE DATABASE
 foodRef.once('value')
     .then(function (snapshot) {
-        // GET THE DATA FROM THE SNAPSHOT
-        const data = snapshot.val();
-        // VARIABLE TO STORE THE DATA
-        const foodArray = Object.entries(data)
+        if (snapshot.exists()) {
+            // GET THE DATA FROM THE SNAPSHOT
+            const data = snapshot.val();
+            // VARIABLE TO STORE THE DATA
+            const foodArray = Object.entries(data)
 
-        // KEEPING LIST OF ITEMS UPDATED ACCORDING TO THE DATABASE
-        for (let i = 0; i < foodArray.length; i++) {
-            const currentFoodItem = foodArray[i];
-            const foodItemId = currentFoodItem[0];
-            const foodItemValue = currentFoodItem[1];
+            // KEEPING LIST OF ITEMS UPDATED ACCORDING TO THE DATABASE
+            for (let i = 0; i < foodArray.length; i++) {
+                const currentFoodItem = foodArray[i];
+                const foodItemId = currentFoodItem[0];
+                const foodItemValue = currentFoodItem[1];
 
-            addItemToShoppingList(currentFoodItem)
+                addItemToShoppingList(currentFoodItem)
+            }
+        } else {
+            shoppingListEl.innerHTML = "No items here... yet"
         }
     })
     .catch(function (error) {
@@ -66,6 +70,11 @@ function clearInputField() {
 
 addButtonEl.addEventListener("click", function () {
     const inputValue = inputFieldEl.value
+
+    if (inputValue === "") {
+        alert("Please enter a value")
+        return
+    }
 
     // ADD THE INPUT VALUE TO THE DATABASE
     push(foodRef, inputValue);
