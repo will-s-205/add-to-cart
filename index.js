@@ -32,8 +32,6 @@ foodRef.once('value')
 
                 addItemToShoppingList(currentFoodItem)
             }
-        } else {
-            shoppingListEl.innerHTML = "No items here... yet"
         }
     })
     .catch(function (error) {
