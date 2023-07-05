@@ -6,7 +6,7 @@ const appSettings = {
 };
 
 // INITIALIZE THE DATABASE
-const app = initializeApp(appSettings)
+// const app = initializeApp(appSettings)
 // const db = getDatabase(app)
 // const foodRef = ref(db, "products")
 // const booksRef = ref(db, "books")
@@ -42,26 +42,14 @@ const inputFieldEl = document.getElementById("input-field")
 const addButtonEl = document.getElementById("add-button")
 const shoppingListEl = document.getElementById("shopping-list")
 
-// function addItemToShoppingList0(input) {
-//     shoppingListEl.innerHTML += `<li>${input}</li>`
-//     // OR
-//     // let newLi = document.createElement("li")
-//     // newLi.textContent = input
-//     // shoppingListEl.append(newLi)
-//     // OR
-//     // shoppingListEl.append(document.createElement("li").textContent = input) // DOES NOT WORK
-// }
-
 // ADD THE INPUT VALUE TO THE SHOPPING LIST
 function addItemToShoppingList(item) {
+    // const arr = Object.fromEntries(item)
     const itemId = item[0]
     const itemValue = item[1]
 
-    const newEl = document.createElement("li")
-
-    newEl.textContent = `${itemValue}`
-
-    shoppingListEl.append(newEl)
+    // SINCE BACK-END AND FRONT-END USING THE SAME METHOD 
+    const newEl = document.getElementById("shopping-list").innerHTML += `<li>${typeof item === "string" ? item : itemValue}</li>`
 }
 
 // // SET THE INPUT FIELD TO BE EMPTY AFTER ADDING AN ITEM
