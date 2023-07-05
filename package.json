@@ -1,12 +1,17 @@
 {
-  "name": "shopping-cart",
+  "homepage": "https://will-s-205.github.io/add-to-cart",
+  "name": "add-to-cart",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "gh-pages -d build"
   },
   "keywords": [],
   "author": "William Step",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "gh-pages": "^5.0.0"
+  }
 }
