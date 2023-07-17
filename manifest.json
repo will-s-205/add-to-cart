@@ -1,0 +1,9 @@
+{
+    "manifest_version": 3,
+    "version": "1.0",
+    "name": "Add to Cart",
+    "action": {
+        "default_popup": "index.html",
+        "default_icon": "./assets/icons/favicon-16x16.png"
+    }
+}
